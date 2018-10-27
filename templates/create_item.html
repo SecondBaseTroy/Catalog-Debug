@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Create New Item</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.0/jquery.min.js"> </script>
+  <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"> </script>
+  <script type="text/javascript">
+    function CheckValues() {
+      if (document.getElementById('item_name').value == "") {
+        alert('Item Name must not be blank.  Please enter an item name.');
+        document.getElementById('item_name').style.borderColor = "red";
+        return false;
+      }
+    }
+  </script>
+  <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body class="fullbleed layout vertical">
+   <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+         <div class="navbar-header">
+            <a href="/" class="navbar-brand">Shoe Catalog</a>
+         </div>
+         <div class="navbar-collapse collapse">
+           <ul class="nav navbar-nav navbar-right">
+             {% if user==None %}
+             <li><div id="signinButton">
+               <span class="g-signin"
+                 data-scope="openid"
+                 data-clientid="464868171391-m1pq55elstdvgovdh89culohh0tmnu5p.apps.googleusercontent.com"
+                 data-redirecturi="catalog"
+                 data-accesstype="offline"
+                 data-cookiepolicy="single_host_origin"
+                 data-callback="signInCallback"
+                 data-approvalprompt="force">
+               </span>
+             </div></li>
+             {% else %}
+               <li><a href="">Logged in as: {{ user }}</a></li>
+               <li><a href="{{ url_for('gdisconnect') }}">Sign out</a></li>
+             {% endif %}
+           </ul>
+         </div>
+      </div>
+   </nav>
+   <div class="container">
+      <div class="row">
+        <div class="col-md-3 col-md-offset-1">
+    <h4>Add new item</h4>
+    <form method='post' action="{{ url_for('newItem')}}" onsubmit="return CheckValues()">
+      <label>Item Name:
+        <input type="text" id="item_name" name="title"></label><br>
+      <label for="description">Description:</label> <br>
+      <textarea name="description" id='description' rows="6" cols="40"></textarea> <br>
+      <label for="category_id">Category:</label>
+      <select name="category_id">
+        {% for category in categories %}
+          <option value="{{category.id}}">{{ category.name }}</option>
+        {% endfor %}
+      </select><br> <br>
+      <input class="btn" type='submit' value='Add'>
+    </form>
+    <div class = 'flash'>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="alert alert-warning" role="alert">
+           {% for message in messages %}
+           <li> {{ message }} </li>
+           {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+     </div>
+  </div>
+  </div>
+  </div>
+</body>
+</html>

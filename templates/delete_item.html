@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Delete Item</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.0/jquery.min.js"> </script>
+  <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"> </script>
+  <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body class="fullbleed layout vertical">
+   <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+         <div class="navbar-header">
+            <a href="/" class="navbar-brand">Shoe Catalog</a>
+         </div>
+         <div class="navbar-collapse collapse">
+           <ul class="nav navbar-nav navbar-right">
+             {% if user==None %}
+             <li><div id="signinButton">
+               <span class="g-signin"
+                 data-scope="openid"
+                 data-clientid="464868171391-m1pq55elstdvgovdh89culohh0tmnu5p.apps.googleusercontent.com"
+                 data-redirecturi="catalog"
+                 data-accesstype="offline"
+                 data-cookiepolicy="single_host_origin"
+                 data-callback="signInCallback"
+                 data-approvalprompt="force">
+               </span>
+             </div></li>
+             {% else %}
+               <li><a href="">Logged in as: {{ user }}</a></li>
+               <li><a href="{{ url_for('gdisconnect') }}">Sign out</a></li>
+             {% endif %}
+           </ul>
+         </div>
+      </div>
+   </nav>
+   <div class="container">
+  <div class="well well-lg">Please confirm {{user}}, you want to delete {{item_title}}?</div>
+  <form action="{{ url_for('deleteItem', item_title=item_title, item_owner=item_owner )}}" method='post'>
+    <input type="hidden" id="CheckUserId" value="{{user}}">
+    <input class="btn" type="submit" value='Confirm Deletion'>
+  </form>
+</div>
+</body>
+</html>
