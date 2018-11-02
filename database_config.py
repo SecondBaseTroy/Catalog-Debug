@@ -39,7 +39,7 @@ class CategoryItem(Base):
 
     id = Column(Integer, primary_key=True)
     title = Column(String(80), nullable=False)
-    owner = Column(String(20), nullable=False)
+    owner = Column(String(30), nullable=False)
     description = Column(String(250), nullable=False)
     category_id = Column(Integer, ForeignKey('category.id'))
     category = relationship(Category)

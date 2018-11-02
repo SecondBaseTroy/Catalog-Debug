@@ -81,6 +81,25 @@ def getCatalog():
         output_json.append(category_output)
     return jsonify(Categories=output_json)
 
+@app.route('/catalog/arbitary/JSON')
+def getArbitaryItem():
+    num_categories = session.query(Category).count()
+    random_categories = random.randint(1,num_categories)
+
+    num_items = session.query(CategoryItem).count()
+    random_items = random.randint(1,num_items)
+
+    output_json = []
+    categories = session.query(Category).filter_by(id=random_categories).one()
+    items = session.query(CategoryItem).filter_by(id=random_items).one()
+    category_output = {}
+    category_output["id"] = categories.id
+    category_output["name"] = categories.name 
+    category_output["items"] = [i.serialize for i in items]
+    output_json.append(category_output)
+    """" return redirect(url_for('getMainPage')) """
+    return jsonify(Categories=output_json)
+    
 
 @app.route('/catalog', methods=['GET', 'POST'])
 def getMainPage():
@@ -278,8 +297,13 @@ def editItem(item_title):
 @app.route('/catalog/items/<item_title>/delete', methods=['GET', 'POST'])
 @login_required
 def deleteItem(item_title):
+    bar = request.args.to_dict()
+    print request.args.get('item_title')
+    print bar
+    print ("method is " + request.method)
     """ Deletes an item given its unique title """
     if request.method == 'POST':
+        print ("method 2nd try is " + request.method)
         itemToDelete = \
             session.query(CategoryItem).filter_by(title=item_title).one()
         session.delete(itemToDelete)

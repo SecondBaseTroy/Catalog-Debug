@@ -14,8 +14,8 @@
           var CkOw=document.getElementById('CheckOwnerId').value;
           alert("Owner:" + CkOw + " User:" + CkUr)
           if (CkUr != CkOw) {
-            alert('You are not authorized to delet this item.');
-            return false;
+            alert('You are not authorized to delete this item.');
+            return true;
           }
           else {       
              alert('You ARE authorized.');
@@ -56,7 +56,7 @@
       <div class="container">
          <div class="row">
             <div class="col-md-4">
-               <h4>Categories</h4>
+               <h4>Categories:</h4>
                <div class="list-group">
                   {% for category in categories %}
                   <a class="list-group-item {{"active" if selected_category.name==category.name}}" href="{{ url_for('getCategoryItems', category_name=category.name) }}" >{{ category.name }}: </a>
@@ -70,19 +70,18 @@
                       <div class="panel-heading" role="tab" id="heading{{item.id}}">
                         <h4 class="panel-title">
                             <b>Item:</b> {{item.title}}
-
-                            <input type="hidden" id="CheckOwnerId" value="{{item.owner}}">
                             <input type="hidden" id="CheckUserId" value="{{user}}">
                               
                             <label for="">Description: </label> {{item.description}} <br>
-                             ---> Owner:{{item.owner}} User:{{user}}<br><br>
+                             ---> Owner:{{item.owner}} User:{{user}} <br><br>
 
-                            <form action="{{ url_for('editItem', item_title=item.title) }}" method='get' onsubmit="return CheckOwner()">
+                            <form action="{{ url_for('editItem', item_title=item.title)}}" method='get' onsubmit="return CheckOwner()">
                               <input class="btn" type="submit" value='Edit'>
                             </form>
                             <br>
-                            <form action="{{ url_for('deleteItem', item_title=item.title) }}" method='get' onsubmit="return CheckOwner()">
+                            <form action="{{ url_for('deleteItem', item_title=item.title, item_owner=item.owner)}}" method='get' onsubmit="return CheckOwner()">
                               <input class="btn" type="submit" value='Delete'>
+                              <input type="hidden" id="CheckOwnerId" value="{{item.owner}}">
                             </form>
                         </h4>
                       </div>

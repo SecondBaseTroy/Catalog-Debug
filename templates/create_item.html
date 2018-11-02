@@ -52,8 +52,10 @@
     <form method='post' action="{{ url_for('newItem')}}" onsubmit="return CheckValues()">
       <label>Item Name:
         <input type="text" id="item_name" name="title"></label><br>
+
       <label for="description">Description:</label> <br>
       <textarea name="description" id='description' rows="6" cols="40"></textarea> <br>
+      
       <label for="category_id">Category:</label>
       <select name="category_id">
         {% for category in categories %}
